@@ -49,11 +49,11 @@ namespace SharePointPnP.PowerShell.Tests
         }
 
         [TestMethod]
-        public void ApplyPnpTemplateFromFolder()
+        public void SetPnpTemplateFromFolder()
         {
             using (var scope = new PSTestScope(true))
             {
-                var results = scope.ExecuteCommand("Apply-PnPProvisioningTemplate",
+                var results = scope.ExecuteCommand("Set-PnPProvisioningTemplate",
                     new CommandParameter("Path", @"dummy.pnp")
                     );
 
