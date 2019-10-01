@@ -848,7 +848,7 @@
     <Compile Include="Branding\EnableResponsiveUI.cs" />
     <Compile Include="Provisioning\Site\ConvertProvisioningTemplate.cs" />
     <Compile Include="Branding\GetJavaScriptLink.cs" />
-    <Compile Include="Provisioning\Site\ApplyProvisioningTemplate.cs" />
+    <Compile Include="Provisioning\Site\SetProvisioningTemplate.cs" />
     <Compile Include="Provisioning\Site\GetProvisioningTemplate.cs" />
     <Compile Include="Provisioning\Site\NewProvisioningTemplateFromFolder.cs" />
     <Compile Include="Branding\GetTheme.cs" />

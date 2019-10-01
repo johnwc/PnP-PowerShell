@@ -23,52 +23,53 @@ using OfficeDevPnP.Core.Utilities;
 
 namespace SharePointPnP.PowerShell.Commands.Provisioning.Site
 {
-    [Cmdlet("Apply", "PnPProvisioningTemplate")]
+    [Cmdlet(VerbsCommon.Set, "PnPProvisioningTemplate")]
+    [Alias("Apply-PnPProvisioningTemplate")]
     [CmdletHelp("Applies a site template to a web",
         Category = CmdletHelpCategory.Provisioning)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path template.xml",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path template.xml",
      Remarks = @"Applies a site template in XML format to the current web.",
      SortOrder = 1)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path template.xml -ResourceFolder c:\provisioning\resources",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path template.xml -ResourceFolder c:\provisioning\resources",
      Remarks = @"Applies a site template in XML format to the current web. Any resources like files that are referenced in the template will be retrieved from the folder as specified with the ResourceFolder parameter.",
      SortOrder = 2)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path template.xml -Parameters @{""ListTitle""=""Projects"";""parameter2""=""a second value""}",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path template.xml -Parameters @{""ListTitle""=""Projects"";""parameter2""=""a second value""}",
      Remarks = @"Applies a site template in XML format to the current web. It will populate the parameter in the template the values as specified and in the template you can refer to those values with the {parameter:<key>} token.
 
 For instance with the example above, specifying {parameter:ListTitle} in your template will translate to 'Projects' when applying the template. These tokens can be used in most string values in a template.",
      SortOrder = 3)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path template.xml -Handlers Lists, SiteSecurity",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path template.xml -Handlers Lists, SiteSecurity",
      Remarks = @"Applies a site template in XML format to the current web. It will only apply the lists and site security part of the template.",
      SortOrder = 4)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path template.pnp",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path template.pnp",
      Remarks = @"Applies a site template from a pnp package to the current web.",
      SortOrder = 5)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path https://tenant.sharepoint.com/sites/templatestorage/Documents/template.pnp",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path https://tenant.sharepoint.com/sites/templatestorage/Documents/template.pnp",
      Remarks = @"Applies a site template from a pnp package stored in a library to the current web.",
      SortOrder = 6)]
     [CmdletExample(
         Code = @"
 PS:> $handler1 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler1
 PS:> $handler2 = New-PnPExtensibilityHandlerObject -Assembly Contoso.Core.Handlers -Type Contoso.Core.Handlers.MyExtensibilityHandler2
-PS:> Apply-PnPProvisioningTemplate -Path NewTemplate.xml -ExtensibilityHandlers $handler1,$handler2",
+PS:> Set-PnPProvisioningTemplate -Path NewTemplate.xml -ExtensibilityHandlers $handler1,$handler2",
         Remarks = @"This will create two new ExtensibilityHandler objects that are run while provisioning the template",
         SortOrder = 7)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path .\ -InputInstance $template",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path .\ -InputInstance $template",
      Remarks = @"Applies a site template from an in-memory instance of a ProvisioningTemplate type of the PnP Core Component, reading the supporting files, if any, from the current (.\) path. The syntax can be used together with any other supported parameters.",
      SortOrder = 8)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPProvisioningTemplate -Path .\template.xml -TemplateId ""MyTemplate""",
+     Code = @"PS:> Set-PnPProvisioningTemplate -Path .\template.xml -TemplateId ""MyTemplate""",
      Remarks = @"Applies the ProvisioningTemplate with the ID ""MyTemplate"" located in the template definition file template.xml.",
      SortOrder = 9)]
 
-    public class ApplyProvisioningTemplate : PnPWebCmdlet
+    public class SetProvisioningTemplate : PnPWebCmdlet
     {
         private ProgressRecord progressRecord = new ProgressRecord(0, "Activity", "Status");
         private ProgressRecord subProgressRecord = new ProgressRecord(1, "Activity", "Status");
@@ -118,6 +119,11 @@ PS:> Apply-PnPProvisioningTemplate -Path NewTemplate.xml -ExtensibilityHandlers 
 
         protected override void ExecuteCmdlet()
         {
+            if (MyInvocation.InvocationName.ToLower() == "apply-pnpprovisioningtemplate")
+            {
+                WriteWarning("Apply-PnPProvisioningTemplate has been deprecated. Use Set-PnPProvisioningTemplate instead.");
+            }
+
             SelectedWeb.EnsureProperty(w => w.Url);
             ProvisioningTemplate provisioningTemplate;
 
