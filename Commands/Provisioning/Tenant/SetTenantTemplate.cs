@@ -17,25 +17,25 @@ using System.Threading.Tasks;
 
 namespace SharePointPnP.PowerShell.Commands.Provisioning.Tenant
 {
-    [Cmdlet("Apply", "PnPTenantTemplate", SupportsShouldProcess = true)]
-    [Alias("Apply-PnPProvisioningHierarchy")]
+    [Cmdlet(VerbsCommon.Set, "PnPTenantTemplate", SupportsShouldProcess = true)]
+    [Alias("Apply-PnPTenantTemplate", "Apply-PnPProvisioningHierarchy")]
     [CmdletHelp("Applies a tenant template to the current tenant. You must be a SharePoint Online global administrator to run the cmdlet.",
         Category = CmdletHelpCategory.Provisioning, SupportedPlatform = CmdletSupportedPlatform.Online)]
     [CmdletExample(
-       Code = @"PS:> Apply-PnPTenantTemplate -Path myfile.pnp",
+       Code = @"PS:> Set-PnPTenantTemplate -Path myfile.pnp",
        Remarks = "Will read the tenant template from the filesystem and will apply the sequences in the template",
        SortOrder = 1)]
     [CmdletExample(
-       Code = @"PS:> Apply-PnPTenantTemplate -Path myfile.pnp -SequenceId ""mysequence""",
+       Code = @"PS:> Set-PnPTenantTemplate -Path myfile.pnp -SequenceId ""mysequence""",
        Remarks = "Will read the tenant template from the filesystem and will apply the specified sequence in the template",
        SortOrder = 1)]
     [CmdletExample(
-     Code = @"PS:> Apply-PnPTenantTemplate -Path myfile.pnp -Parameters @{""ListTitle""=""Projects"";""parameter2""=""a second value""}",
+     Code = @"PS:> Set-PnPTenantTemplate -Path myfile.pnp -Parameters @{""ListTitle""=""Projects"";""parameter2""=""a second value""}",
      Remarks = @"Applies a tenant template to the current tenant. It will populate the parameter in the template the values as specified and in the template you can refer to those values with the {parameter:<key>} token.
 
 For instance with the example above, specifying {parameter:ListTitle} in your template will translate to 'Projects' when applying the template. These tokens can be used in most string values in a template.",
      SortOrder = 3)]
-    public class ApplyTenantTemplate : PnPAdminCmdlet
+    public class SetTenantTemplate : PnPAdminCmdlet
     {
         private const string ParameterSet_PATH = "By Path";
         private const string ParameterSet_OBJECT = "By Object";
@@ -90,7 +90,11 @@ For instance with the example above, specifying {parameter:ListTitle} in your te
         {
             if (MyInvocation.InvocationName.ToLower() == "apply-pnpprovisioninghierarchy")
             {
-                WriteWarning("Apply-PnPProvisioningHierarchy has been deprecated. Use Apply-PnPTenantTemplate instead.");
+                WriteWarning("Apply-PnPProvisioningHierarchy has been deprecated. Use Set-PnPTenantTemplate instead.");
+            }
+            if (MyInvocation.InvocationName.ToLower() == "apply-pnptenanttemplate")
+            {
+                WriteWarning("Apply-PnPTenantTemplate has been deprecated. Use Set-PnPTenantTemplate instead.");
             }
 
             var sitesProvisioned = new List<ProvisionedSite>();
